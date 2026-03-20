@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F-Overthinking — Mini Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #363657;
+    --deep:    #1A1A2E;
+    --pink:    #FF8CA8;
+    --pink-hot:#FF6B9D;
+    --warm:    #F7F4F2;
+    --white:   #FFFFFF;
+    --muted:   rgba(54,54,87,0.55);
+    --line:    rgba(54,54,87,0.12);
+    --locked:  rgba(54,54,87,0.06);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--warm);
+    color: var(--navy);
+    min-height: 100vh;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .shell {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px 100px;
+  }
+
+  /* HEADER */
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 0 0;
+    margin-bottom: 48px;
+  }
+
+  .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--navy);
+    opacity: 0.5;
+  }
+
+  .logo-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pink); }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 20px 0 48px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 48px;
+  }
+
+  .hero-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--pink-hot);
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 52px);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+
+  .hero h1 em { font-style: italic; color: var(--pink); }
+
+  .hero-sub {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 420px;
+    margin: 0 auto 28px;
+    line-height: 1.8;
+  }
+
+  .course-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  .course-meta span { display: flex; align-items: center; gap: 6px; }
+  .meta-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--line); }
+
+  /* EMAIL GATE BANNER */
+  .gate-banner {
+    background: var(--navy);
+    border-radius: 16px;
+    padding: 36px 32px;
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .gate-banner-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 12px;
+  }
+
+  .gate-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .gate-banner h2 em { font-style: italic; color: var(--pink); }
+
+  .gate-banner p {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 24px;
+    line-height: 1.7;
+  }
+
+  .gate-form {
+    display: flex;
+    gap: 10px;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .gate-form input {
+    flex: 1;
+    padding: 13px 16px;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .gate-form input::placeholder { color: rgba(255,255,255,0.35); }
+  .gate-form input:focus { border-color: var(--pink); }
+
+  .gate-form button {
+    padding: 13px 24px;
+    background: var(--pink-hot);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .gate-form button:hover { background: var(--pink); transform: translateY(-1px); }
+  .gate-form button:active { transform: translateY(0); }
+
+  .gate-privacy {
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 12px;
+  }
+
+  /* MODULE LIST */
+  .modules { display: flex; flex-direction: column; gap: 10px; }
+
+  /* MODULE CARD */
+  .module {
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+    animation: fadeUp 0.3s ease both;
+  }
+
+  .module:hover:not(.locked) { box-shadow: 0 6px 24px rgba(54,54,87,0.09); }
+
+  .module.locked {
+    background: var(--locked);
+    border-color: transparent;
+  }
+
+  .module-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .module.locked .module-header { cursor: default; }
+
+  .module-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .module.locked .module-num {
+    background: var(--line);
+    color: var(--muted);
+  }
+
+  .module-title {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--navy);
+    flex: 1;
+    line-height: 1.3;
+  }
+
+  .module.locked .module-title { color: var(--muted); }
+
+  .module-chevron {
+    width: 18px;
+    height: 18px;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+
+  .module.open .module-chevron { transform: rotate(180deg); }
+
+  .lock-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--line);
+    flex-shrink: 0;
+  }
+
+  /* MODULE BODY */
+  .module-body {
+    display: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .module.open .module-body { display: block; }
+
+  .module-inner {
+    padding: 24px;
+  }
+
+  /* VIDEO */
+  .video-wrap {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    background: var(--deep);
+  }
+
+  .video-wrap iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  /* MODULE TEXT */
+  .module-text {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--navy);
+    line-height: 1.85;
+  }
+
+  .module-text p { margin-bottom: 14px; }
+  .module-text p:last-child { margin-bottom: 0; }
+  .module-text em { font-style: italic; }
+  .module-text strong { font-weight: 500; }
+
+  .module-text .callout {
+    background: var(--warm);
+    border-left: 3px solid var(--pink);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .module-text ol {
+    padding-left: 20px;
+    margin: 14px 0;
+  }
+
+  .module-text ol li {
+    margin-bottom: 10px;
+    padding-left: 6px;
+  }
+
+  .sign-off {
+    margin-top: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-style: italic;
+    color: var(--navy);
+  }
+
+  /* CTA BLOCK (mod 12) */
+  .cta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(54,54,87,0.15); }
+
+  .cta-btn-primary {
+    background: var(--pink-hot);
+    color: var(--white);
+  }
+
+  .cta-btn-secondary {
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .cta-btn-outline {
+    background: transparent;
+    color: var(--navy);
+    border: 1.5px solid var(--line);
+  }
+
+  /* LOCKED PREVIEW LABEL */
+  .locked-modules-label {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 20px 0 10px;
+  }
+
+  /* SUCCESS STATE */
+  .gate-success {
+    display: none;
+    text-align: center;
+    padding: 24px;
+    background: rgba(255,140,168,0.08);
+    border: 1px solid rgba(255,140,168,0.2);
+    border-radius: 12px;
+    margin-bottom: 32px;
+  }
+
+  .gate-success p {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--navy);
+  }
+
+  .gate-success strong { font-weight: 500; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .gate-form { flex-direction: column; }
+    .module-title { font-size: 15px; }
+    .module-header { padding: 16px 18px; }
+    .module-inner { padding: 18px; }
+    .gate-banner { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="site-header">
+    <div class="logo-mark">
+      <div class="logo-dot"></div>
+      SDC Coaching
+    </div>
+  </header>
+
+  <div class="hero">
+    <span class="hero-tag">Mini Course</span>
+    <h1>F-<em>Overthinking</em></h1>
+    <p class="hero-sub">Stop letting your mind run the show. Tools, understanding and a bit of honesty — for anyone tired of being ruled by their own thinking.</p>
+    <div class="course-meta">
+      <span>12 Modules</span>
+      <div class="meta-dot"></div>
+      <span>Videos under 3:30</span>
+      <div class="meta-dot"></div>
+      <span>Free Access</span>
+    </div>
+  </div>
+
+  <!-- EMAIL GATE -->
+  <div class="gate-banner" id="gate-banner">
+    <div class="gate-banner-eyebrow">Free Access</div>
+    <h2>Unlock the full <em>mini course</em></h2>
+    <p>Enter your details to access all 12 modules — including the videos and written notes for each one.</p>
+    <div class="gate-form">
+      <input type="text" id="inp-name" placeholder="First name" />
+      <input type="email" id="inp-email" placeholder="Email address" />
+      <button onclick="unlockCourse()">Unlock →</button>
+    </div>
+    <p class="gate-privacy">No spam. Unsubscribe any time.</p>
+  </div>
+
+  <!-- SUCCESS MESSAGE -->
+  <div class="gate-success" id="gate-success">
+    <p>🎉 <strong>You're in!</strong> All 12 modules are now unlocked. Work through them in order for the best experience.</p>
+  </div>
+
+  <!-- MODULES -->
+  <div class="modules" id="modules-list">
+
+    <!-- MODULE 1 — Start Here (open preview, no video) -->
+    <div class="module open" id="mod-1">
+      <div class="module-header" onclick="toggleModule('mod-1')">
+        <div class="module-num">1</div>
+        <div class="module-title">Start Here</div>
+        <svg class="module-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="module-body">
+        <div class="module-inner">
+          <div class="module-text">
+            <div class="callout">
+              Before you begin, this course will make most sense if you work your way through the modules, as the concepts stack by working through it in order. That being said, if you'd rather rip into what catches your eye please do.
+            </div>
+            <p>👌 Ah-ha! Welcome to this super short course built for you. Designed to help you halt overwhelm, stifle stress and pull you out of the malaise of middle age (if you're there).</p>
+            <p>When you believe your own thinking, you are at its mercy. It's easier to fall into the trap of thinking <em>'things out there can impact how I am feeling in here.'</em></p>
+            <p>The principles in this course have allowed me to navigate three cancer diagnoses — well, two when you factor in I learned a lot of this because of the first diagnosis. BUT — if they worked for me when I was due to have my jaw ripped out and rebuilt with a bone from my leg, I am confident they'll work for you too.</p>
+            <p>It doesn't matter if you're a CEO, in sales, working from home, junior staff, director level or setting up your own business — <strong>if you're a human, this will help you.</strong></p>
+            <p>The goal of this mini-course is to give you the tools, tips and understanding to spot when your mind is being <em>unhelpful (for want of a stronger word)</em> and for you to live your life, on your terms.</p>
+            <p>And not on the terms of the tyrant within.</p>
+            <p>Ready? Let's begin…</p>
+            <p class="sign-off">Shaun</p>
+            <p style="margin-top:10px;font-size:13px;color:var(--muted);">PS — each video is no more than 3 mins 30 seconds for your viewing pleasure.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULES 2–12 LOCKED -->
+    <div class="module locked" id="mod-2">
+      <div class="module-header">
+        <div class="module-num">2</div>
+        <div class="module-title">The Evil Scheme</div>
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+    </div>
+
+    <div class="module locked" id="mod-3">
+      <div class="module-header">
+        <div class="module-num">3</div>
+        <div class="module-title">Real Fake Thoughts</div>
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+    </div>
+
+    <div class="module locked" id="mod-4">
+      <div class="module-header">
+        <div class="module-num">4</div>
+        <div class="module-title">Circumstance vs Experience</div>
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+    </div>
+
+    <div class="module locked" id="mod-5">
+      <div class="module-header">
+        <div class="module-num">5</div>
+        <div class="module-title">Feelings are a Thermostat for Your Thinking</div>
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+    </div>
+
+    <div class="module locked" id="mod-6">
+      <div class="module-header">
+        <div class="module-num">6</div>
+        <div class="module-title">What This Process Isn't</div>
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+    </div>
+
+    <div class="module locked" id="mod-7">
+      <div class="module-header">
+        <div class="module-num">7</div>
+        <div class="module-title">Letting Thoughts Settle &amp; Your Inner Wisdom</div>
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+    </div>
+
+    <div class="module locked" id="mod-8">
+      <div class="module-header">
+        <div class="module-num">8</div>
+        <div class="module-title">Being Human</div>
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+    </div>
+
+    <div class="module locked" id="mod-9">
+      <div class="module-header">
+        <div class="module-num">9</div>
+        <div class="module-title">Put the Weight Down</div>
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+    </div>
+
+    <div class="module locked" id="mod-10">
+      <div class="module-header">
+        <div class="module-num">10</div>
+        <div class="module-title">The Power of These Tools</div>
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+    </div>
+
+    <div class="module locked" id="mod-11">
+      <div class="module-header">
+        <div class="module-num">11</div>
+        <div class="module-title">For High Performance</div>
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+    </div>
+
+    <div class="module locked" id="mod-12">
+      <div class="module-header">
+        <div class="module-num">12</div>
+        <div class="module-title">What Now?</div>
+        <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+    </div>
+
+    <div class="locked-modules-label" id="locked-label">↑ 11 modules unlocked on signup</div>
+
+  </div>
+
+</div>
+
+<script>
+// ── KIT FORM ID ───────────────────────────────────────────
+const KIT_FORM_ID = 'YOUR_KIT_FORM_ID_HERE';
+
+// ── MODULE DATA ───────────────────────────────────────────
+const MODULE_DATA = {
+  'mod-2': {
+    video: null,
+    text: `<p>Okay, I'll lay it on you straight.</p>
+<p>Here's my honest and true reason for this 'f-overthinking' mini-series:</p>
+<ol>
+  <li>First and foremost to help you out if your mind calls the shots when it comes to your thinking. Basically make you top dog in your own life again. Everyone deserves peace from their mind, and I PROMISE you — it's easier than you've been told.</li>
+  <li>I hope you take so much from the course and the twice weekly emails, you either join the members only Skool group at $2, $5 or $9 a month, or you book a coaching call with me to see if there might be a fit in working together 1-1, or you book me to speak at your event or organisation.</li>
+</ol>
+<p>I learned a really cunning trick a while back that has changed my life and business for the better… it's the old <em>'show you can help people by actually helping them'</em> trick.</p>
+<p>Oldest one in the book.</p>
+<p>Now that my evil scheme has been revealed — let's get into it!</p>
+<p class="sign-off">Shaun</p>`
+  },
+  'mod-3': {
+    video: 'https://player.vimeo.com/video/1117496488?h=bd62885e4f',
+    text: `<p>Maybe the most important principle here is this: <strong>your thoughts are an illusion.</strong></p>
+<p>They aren't real. Or at least they have no reality or meaning until you give them meaning.</p>
+<p>When you step into the world of 'thoughts are an illusion' you move away from positive and negative labels — as it all becomes <em>'thought'</em>. Then you apply different flavours to these thoughts: 'good', 'bad', 'fun', 'sad'.</p>
+<p>One thought might be excited flavoured (a new car). One thought might be fear flavoured (insurance on said new car?). One thought might be very self-critical. One thought might be full of self praise. None of these carry ANY weight except for the meaning you give them.</p>
+<p>If my mind produces the thought <em>'you tall bald skinny bo**ix, with your leg in your mouth'</em> — this needs NO entertainment. It doesn't need danced with, it doesn't need believed, or worse… judged.</p>
+<p>But there's a difference between thought and thinking. <strong>Thinking is different, and very useful.</strong> Thinking is 'I have to put the bins out tomorrow night' or 'I have a dental appointment on Monday.' These are useful acts of thinking.</p>
+<p>Laying awake at night reliving that thing you said to that person at a bar twenty years ago… not so helpful.</p>
+<p>Playing small with your business because you're not sure what people will think… not so helpful.</p>
+<p>Believing you are overwhelmed, stressed or in a state of panic when things are pretty okay? Not so helpful.</p>
+<p>Remember — your thoughts are an illusion. Got it? Course you do!</p>
+<p class="sign-off">Shaun</p>`
+  },
+  'mod-4': {
+    video: 'https://player.vimeo.com/video/1116847550?h=0dc2fdea1d',
+    text: `<p>Circumstances you have very little control over. They are… well, circumstances.</p>
+<p>The weather is a circumstance. Man United are a circumstance. Having cancer is a circumstance.</p>
+<p>Your <em>experience</em> of these circumstances? Ah-ha! This is where the game gets interesting.</p>
+<p>It comes down to your <strong>thinking about the circumstance.</strong> NOT the circumstance itself.</p>
+<p>When Man Utd play crap (read as: almost every week), I feel sad and 3 friends feel happy. So it <em>cannot</em> be the football team causing the feelings. If it was, we'd all feel the same way about the same events.</p>
+<div class="callout">
+  <strong>Remember:</strong><br>
+  Circumstance — an event that is.<br>
+  Experience — your thinking about the event.
+</div>
+<p>Before we begin — two questions for you:</p>
+<ol>
+  <li>Are you open to this process being easy?</li>
+  <li>Are you open to having a bit of fun on the path?</li>
+</ol>
+<p>It's a serious business… not solemn.</p>
+<p class="sign-off">Shaun 🕺🏻</p>`
+  },
+  'mod-5': {
+    video: 'https://player.vimeo.com/video/1117033922?h=4695427eab',
+    text: `<p>The problem with feelings is they feel so damned real. They sneak up on you and cause you to believe you <em>are</em> the feeling you're experiencing.</p>
+<p>'I am sad.' 'I am depressed.' 'I am overwhelmed.'</p>
+<p><strong>NO!!</strong> You are none of these things. No more than I was cancer when I had it.</p>
+<p>You are <em>experiencing</em> these feelings. They are not who you are.</p>
+<p>And worse than that — you are only experiencing them because your sneaky little bugger of a mind is thinking thoughts which are creating the feeling in real time.</p>
+<p>From this point on, you now know your feelings as nothing more than a measurement of where your thinking is. This is <em>not</em> the same as denying your feelings. If you're thinking sad thoughts, you'll get sad feelings — and there are times it's totally appropriate to sit in the sadness.</p>
+<p>If you're thinking 'I've had a busy week and don't need to train' thoughts, this will create a different feeling, which feels real — but is nothing more than thinking which is controlling how you're acting.</p>
+<p>See… your mind can be a dipstick. But once you learn these judo ninja jedi moves, you'll be fooled no more.</p>
+<p>Which means you'll have to take ownership for saying 'I didn't want to train today' — as you'll know the story being fabricated by your brain is 100% fictional.</p>
+<p>Sorry about that one.</p>
+<p class="sign-off">Shaun 🕺🏻</p>`
+  },
+  'mod-6': {
+    video: 'https://player.vimeo.com/video/1117096381?h=6965681956',
+    text: `<p>When you start seeing that your experience comes from your thinking about events, rather than the events themselves, it can occasionally be easy to conclude:</p>
+<div class="callout"><em>'Because my experience comes from my thinking, this opens the door for people to walk all over me — because they don't have the power to make me feel anything, as it's my own thinking causing the hurt.'</em></div>
+<p>This couldn't be further from the truth.</p>
+<p>The goal of this process is to move you away from <strong>reaction</strong> into <strong>response.</strong></p>
+<p>Instead of getting hooked and pulled into a situation, you are aware it's your thinking pulling you in. You'll still feel what you're feeling — but you know <em>why</em> you're feeling it.</p>
+<p>From here you can respond to life's situations vs reacting to them. If someone crosses a boundary, you have a conversation with them instead of moving into freeze, fight, flight or fawn.</p>
+<p>Which gives you back the power you thought you'd lost. Which by definition… makes you powerful (af).</p>
+<p>Nice one, eh?</p>
+<p class="sign-off">Shaun</p>`
+  },
+  'mod-7': {
+    video: 'https://player.vimeo.com/video/1117139600?h=892ac7a6bf',
+    text: `<p>If I gave you a bottle with a beautiful mix of dirt and water in it and asked you to shake it up. Then asked you to keep shaking the bottle to the point where the water becomes clear.</p>
+<p>The harder you shake, the louder I shout <em>'KEEP SHAKING DAMN IT'</em> — the more cloudy the water gets.</p>
+<p>The only way for the water to become clear is to <strong>put the bottle down.</strong> To let it settle.</p>
+<p>From this settled state the water will become clear. It's the same with your thinking.</p>
+<p>The very last place you are going to find fresh new thinking is in old smelly thinking. Old thinking is any pattern you repeat that doesn't give you the result you want — usually resulting in stress, overwhelm, panic… all the good things you might know a little too much about.</p>
+<p>When you let your thinking settle, from this settled space you allow yourself to tap into your <strong>inner wisdom.</strong> This is where you have fresh ideas, where you can see solutions to problems you couldn't before. Where you realign to your purpose.</p>
+<p>Put the bottle down and see what comes up in stillness.</p>
+<p class="sign-off">Shaun ❤️</p>
+<p style="font-size:13px;color:var(--muted);margin-top:8px;">PS — one I missed in the video: 'driving' 😉</p>`
+  },
+  'mod-8': {
+    video: 'https://player.vimeo.com/video/1117148983?h=4087fd6530',
+    text: `<p>There are many things I can help with.</p>
+<p>You being a human isn't one of them.</p>
+<p>Are you in dire need of 'fixing' — or are you acting like a regular, normal human?</p>
+<p class="sign-off">Shaun 🕺🏻</p>`
+  },
+  'mod-9': {
+    video: 'https://player.vimeo.com/video/1117387739?h=6a8d38a846',
+    text: `<p>The usual language around 'changing thought' goes like:</p>
+<div class="callout">
+  'I need to battle my thinking'<br>
+  'I have to conquer my thoughts'<br>
+  'I'm going to go to war with myself'<br>
+  'I need to learn to control my thinking'
+</div>
+<p>When you hear the words 'battle', 'conquer', 'war' and 'control' — what comes up for you?</p>
+<p>For me it's blood, sweat and tears. It's strategising: <em>'how will I figure out how to beat myself?'</em></p>
+<p>You don't have to beat yourself. You don't have to go back in time and figure out why you are the way you are. Well, you can. But the scary risk is you actually find out why you are the way you are — and it's such a perfect explanation you couldn't ever possibly change.</p>
+<p>Wouldn't that be a bummer?</p>
+<p>If you and I were on a hike and I was carrying a giant kettlebell, clearly suffering. Huffing and puffing and complaining.</p>
+<p>Would you spend months psycho-analysing <em>why</em> I'm carrying the weight? Or would you say — <strong>SHAUN, wake up man. You know you can put that weight down, right?</strong></p>
+<p>Which one of those would be more helpful?</p>
+<p>Put the weight down. Start enjoying the journey.</p>
+<p class="sign-off">Shaun ❤️</p>`
+  },
+  'mod-10': {
+    video: 'https://player.vimeo.com/video/1117394751?h=55ebd52163',
+    text: `<p>If this is your first time coming across some of these principles they may seem a little too easy. A little too <em>'that's fine for you Shaun, but MYYYY thinking is REAL.'</em></p>
+<p>Don't be bringing that talk here.</p>
+<p>I am not here to try and change your thinking. Only you can do that. I am here to question your thinking, to challenge it. To poke and prod it and see how your stories hold up under examination. Or more specifically — to help you understand it.</p>
+<p>I am not here to 'fix' anything (mainly as you don't need fixing). My goal is that you are <strong>okay with whatever happens.</strong></p>
+<p>This sounds like a crazy aim — but if you're okay with whatever happens, that is a damned powerful place to be. As a bonus you waste ZERO time worrying about being worried, or judging a past action you took.</p>
+<p>Allow these ideas to settle with you. Ironically, don't try and overthink them — as that is thinking trying to understand thinking. And good luck with that.</p>
+<p class="sign-off">Shaun 🕺🏻</p>`
+  },
+  'mod-11': {
+    video: 'https://player.vimeo.com/video/1117544801?h=9b801cff41',
+    text: `<p>There's a strange paradox which comes up when you allow your busy, thinking mind to settle.</p>
+<p>You tap into the inner wisdom that's available to us all — when you're open to it.</p>
+<p>That wisdom doesn't worry about messaging strangers, or making content, or being assertive where it needs to be. Doesn't worry about asking for more money, or doing the work that needs doing.</p>
+<p>That inner wisdom is calm, focused and present. It's an energy that excites — that <em>pulls</em> you forward rather than you having to push.</p>
+<p>It does the work that needs doing without the clatter and chatter of the mind telling you made-up stories of what others will think if you make the content, do the outreach… you know the rest.</p>
+<p>It also takes you out of the fearful future your mind creates. Ever felt so overwhelmed by what you have to do or where you are in life? That is your mind doing its thing.</p>
+<p>When you let these thoughts settle, the way becomes clear. You do what needs to be done.</p>
+<p><strong>And this power is here, within you. Right now.</strong></p>
+<p class="sign-off">Shaun</p>`
+  },
+  'mod-12': {
+    video: null,
+    text: `<p>Now your life is yours to live on your terms! The future is yours for the taking.</p>
+<p>But if you mean <em>where are you supposed to go with this journey?</em> — here are your next steps:</p>
+<div class="cta-block">
+  <a href="YOUR_SKOOL_LINK_HERE" class="cta-btn cta-btn-secondary" target="_blank">
+    🧠 Join the Skool Group
+  </a>
+  <a href="YOUR_COACHING_CALL_LINK_HERE" class="cta-btn cta-btn-primary" target="_blank">
+    ☎️ Book a Coaching Call with Shaun
+  </a>
+  <a href="https://shaundotcoach.github.io/pressurescore" class="cta-btn cta-btn-outline" target="_blank">
+    📊 Take the Peace, Power &amp; Performance Quiz
+  </a>
+</div>
+<p style="font-size:13px;color:var(--muted);line-height:1.7;">The Skool group starts at $2 a month and includes breathwork, meditations and hypnosis recordings + ongoing content on how to better understand your thinking. (Side note — I am a former breathworker and hypno-therapist. These tools have their place. But when you start to embody what I'm talking about in this course, you'll use breathwork as a <em>boost</em> to your systems, not as a sticking plaster when life gets hard.)</p>
+<p>Congratulations on giving yourself this time — and see you over on the weekly emails, or in the quiz.</p>
+<p class="sign-off">Shaun ❤️</p>`
+  }
+};
+
+function toggleModule(id) {
+  const mod = document.getElementById(id);
+  if (mod.classList.contains('locked')) return;
+  mod.classList.toggle('open');
+}
+
+function unlockCourse() {
+  const name  = document.getElementById('inp-name').value.trim();
+  const email = document.getElementById('inp-email').value.trim();
+  if (!name || !email || !email.includes('@')) {
+    alert('Please enter your name and a valid email address.');
+    return;
+  }
+
+  sendToKit(name, email);
+
+  // Hide gate, show success
+  document.getElementById('gate-banner').style.display = 'none';
+  document.getElementById('locked-label').style.display = 'none';
+  const successEl = document.getElementById('gate-success');
+  successEl.style.display = 'block';
+
+  // Unlock all modules
+  Object.keys(MODULE_DATA).forEach((id, index) => {
+    const mod = document.getElementById(id);
+    const data = MODULE_DATA[id];
+    const title = mod.querySelector('.module-title').textContent;
+    const num = mod.querySelector('.module-num').textContent;
+
+    const videoHTML = data.video
+      ? `<div class="video-wrap">
+          <iframe src="${data.video}" allowfullscreen allow="autoplay; fullscreen; picture-in-picture"></iframe>
+        </div>`
+      : '';
+
+    mod.classList.remove('locked');
+    mod.style.animationDelay = `${index * 0.04}s`;
+    mod.innerHTML = `
+      <div class="module-header" onclick="toggleModule('${id}')">
+        <div class="module-num">${num}</div>
+        <div class="module-title">${title}</div>
+        <svg class="module-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="module-body">
+        <div class="module-inner">
+          ${videoHTML}
+          <div class="module-text">${data.text}</div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function sendToKit(name, email) {
+  if (KIT_FORM_ID === 'YOUR_KIT_FORM_ID_HERE') return;
+  const fd = new FormData();
+  fd.append('email_address', email);
+  fd.append('first_name', name);
+  fetch(`https://app.kit.com/forms/${KIT_FORM_ID}/subscriptions`, {
+    method: 'POST', body: fd, mode: 'no-cors'
+  }).catch(() => {});
+}
+</script>
+</body>
+</html>
